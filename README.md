@@ -1,6 +1,6 @@
 # Adding VGS to a Stripe Payments Environment
 
-This application demonstrates how to migrate from Stripe-hosted checkout to VGS Collect with network token provisioning for enhanced security and compliance.
+This application demonstrates how to migrate from a Stripe-hosted checkout experience to VGS Collect while still retaining Stripe as a payments processor and subscription manager.
 
 ## Overview
 
