@@ -1,5 +1,5 @@
 {
-  "name": "stripe-to-vgs-migration",
+  "name": "vgs-with-stripe",
   "version": "1.0.0",
   "description": "Demonstration of migrating from Stripe hosted checkout to VGS Collect with network token provisioning",
   "main": "server/index.js",

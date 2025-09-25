@@ -248,42 +248,6 @@ body {
   margin-bottom: 0;
 }
 
-.migration-flow {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.flow-step {
-  background: white;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 1.5rem;
-  text-align: center;
-  position: relative;
-}
-
-.flow-step.current {
-  border-color: #4299e1;
-  background: #ebf8ff;
-}
-
-.flow-step.completed {
-  border-color: #48bb78;
-  background: #f0fff4;
-}
-
-.flow-step h3 {
-  color: #2d3748;
-  margin-bottom: 0.5rem;
-}
-
-.flow-step p {
-  color: #718096;
-  font-size: 0.875rem;
-}
-
 .arrow {
   position: absolute;
   right: -1rem;
@@ -303,10 +267,6 @@ body {
   }
   
   .form-row {
-    grid-template-columns: 1fr;
-  }
-  
-  .migration-flow {
     grid-template-columns: 1fr;
   }
   

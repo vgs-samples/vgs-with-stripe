@@ -1,7 +1,7 @@
 {
   "name": "stripe-vgs-server",
   "version": "1.0.0",
-  "description": "Backend server for Stripe to VGS migration demo",
+  "description": "Backend server for VGS with Stripe demo",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",

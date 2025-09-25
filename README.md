@@ -101,9 +101,6 @@ This will start:
 3. Use test card numbers (e.g., 4111 1111 1111 1111)
 4. Click "Subscribe with VGS"
 
-### Migration Guide
-See the Migration Plan below. The in-app guide has been removed.
-
 ## API Endpoints
 ### Stripe Routes (`/api/stripe/*`)
 - `POST /create-checkout-session` - Create Stripe checkout session

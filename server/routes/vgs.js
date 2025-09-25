@@ -15,6 +15,23 @@ const VGS_ENVIRONMENT = process.env.VGS_ENVIRONMENT || 'sandbox';
 
 const VGS_AUTH_TOKEN_URL = 'https://auth.verygoodsecurity.com/auth/realms/vgs/protocol/openid-connect/token';
 
+// Generate JWT token for VGS Collect authentication
+router.get('/get-collect-token', async (req, res) => {
+  try {
+    const params = new URLSearchParams();
+    params.append('client_id', VGS_CLIENT_ID);
+    params.append('client_secret', VGS_CLIENT_SECRET);
+    params.append('grant_type', 'client_credentials');
+
+    const response = await axios.post(VGS_AUTH_TOKEN_URL, params);
+    res.json({ access_token: response.data.access_token });
+  } catch (error) {
+    console.error('Error getting VGS token:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Failed to get token' });
+  }
+});
+
+
 // Create VGS outbound proxy client for PSP token provisioning
 function getProxyAgent() {
   const vgs_outbound_url = `${VGS_VAULT_ID}.${VGS_ENVIRONMENT}.verygoodproxy.com`;
@@ -31,22 +48,6 @@ function getProxyAgent() {
 
   return tunnel.httpsOverHttps(proxyConfig);
 }
-
-// Generate JWT token for VGS Collect authentication
-router.get('/get-collect-token', async (req, res) => {
-  try {
-    const params = new URLSearchParams();
-    params.append('client_id', VGS_CLIENT_ID);
-    params.append('client_secret', VGS_CLIENT_SECRET);
-    params.append('grant_type', 'client_credentials');
-
-    const response = await axios.post(VGS_AUTH_TOKEN_URL, params);
-    res.json({ access_token: response.data.access_token });
-  } catch (error) {
-    console.error('Error getting VGS token:', error.response?.data || error.message);
-    res.status(500).json({ error: 'Failed to get token' });
-  }
-});
 
 // Create Stripe payment method using VGS outbound proxy
 async function createStripePaymentMethod(cardObject, customerId = null) {
@@ -142,65 +143,6 @@ router.post('/process-complete-flow', async (req, res) => {
         });
   } catch (error) {
     console.error('Error processing complete flow:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Create a subscription using the payment method
-router.post('/create-subscription', async (req, res) => {
-  try {
-    const { 
-      paymentMethodId, 
-      customerId, 
-      priceId = process.env.STRIPE_PRICE_ID 
-    } = req.body;
-
-    // Create subscription with the payment method
-    const subscription = await stripe.subscriptions.create({
-      customer: customerId,
-      items: [{ price: priceId }],
-      default_payment_method: paymentMethodId,
-      expand: ['latest_invoice.payment_intent'],
-    });
-
-    res.json({
-      subscriptionId: subscription.id,
-      status: subscription.status,
-      currentPeriodEnd: subscription.current_period_end,
-    });
-  } catch (error) {
-    console.error('Error creating subscription:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Process a one-time payment using the payment method
-router.post('/process-payment', async (req, res) => {
-  try {
-    const { 
-      paymentMethodId, 
-      amount, 
-      currency = 'usd',
-      customerId 
-    } = req.body;
-
-    // Create payment intent
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: amount * 100, // Convert to cents
-      currency,
-      customer: customerId,
-      payment_method: paymentMethodId,
-      confirmation_method: 'manual',
-      confirm: true,
-    });
-
-    res.json({
-      paymentIntentId: paymentIntent.id,
-      status: paymentIntent.status,
-      clientSecret: paymentIntent.client_secret,
-    });
-  } catch (error) {
-    console.error('Error processing payment:', error);
     res.status(500).json({ error: error.message });
   }
 });
