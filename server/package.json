@@ -1,0 +1,23 @@
+{
+  "name": "stripe-vgs-server",
+  "version": "1.0.0",
+  "description": "Backend server for Stripe to VGS migration demo",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "NODE_EXTRA_CA_CERTS=$(pwd)/outbound-route-sandbox.pem node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "stripe": "^14.7.0",
+    "axios": "^1.6.0",
+    "body-parser": "^1.20.2",
+    "qs": "^6.11.0",
+    "tunnel": "^0.0.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
